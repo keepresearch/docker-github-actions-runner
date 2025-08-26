@@ -35,21 +35,9 @@ function install_git-lfs() {
   rm -rf /tmp/lfs.tar.gz "/tmp/git-lfs-${GIT_LFS_VERSION}"
 }
 
-function install_docker-cli() {
-  apt-get install -y docker-ce-cli --no-install-recommends --allow-unauthenticated
-}
-
 function install_docker() {
-  apt-get install -y docker-ce docker-ce-cli docker-buildx-plugin containerd.io docker-compose-plugin --no-install-recommends --allow-unauthenticated
-
-  echo -e '#!/bin/sh\ndocker compose --compatibility "$@"' > /usr/local/bin/docker-compose
-  chmod +x /usr/local/bin/docker-compose
-
+  apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin --no-install-recommends --allow-unauthenticated
   sed -i 's/ulimit -Hn/# ulimit -Hn/g' /etc/init.d/docker
-}
-
-function install_container-tools() {
-  ( apt-get install -y --no-install-recommends podman buildah skopeo || : )
 }
 
 function install_github-cli() {
@@ -105,6 +93,11 @@ function install_powershell() {
   tar zxf /tmp/powershell.tar.gz -C /opt/powershell
   chmod +x /opt/powershell/pwsh
   ln -s /opt/powershell/pwsh /usr/bin/pwsh
+}
+
+function install_rust() {
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --no-modify-path --default-toolchain stable
+  rustup component add clippy rustfmt
 }
 
 function install_tools() {

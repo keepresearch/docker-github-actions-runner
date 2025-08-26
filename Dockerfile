@@ -1,6 +1,5 @@
 # hadolint ignore=DL3007
-FROM myoung34/github-runner-base:latest
-LABEL maintainer="myoung34@my.apsu.edu"
+FROM github-runner-base:latest
 
 ENV AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
 RUN mkdir -p /opt/hostedtoolcache

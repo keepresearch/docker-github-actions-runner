@@ -1,9 +1,17 @@
-FROM ubuntu:focal
-LABEL maintainer="myoung34@my.apsu.edu"
+FROM debian:trixie
+
+ARG APT_MIRROR_DEBIAN="http://deb.debian.org/debian"
+RUN sed -i "s#http://deb.debian.org/debian#${APT_MIRROR_DEBIAN}#g" /etc/apt/sources.list.d/debian.sources
+
+ENV DOCKER_DOWNLOAD_URL="https://download.docker.com"
 
 ARG DUMB_INIT_VERSION="1.2.2"
 # TODO: remove git PPA and skopeo customizations for focal when focal hits EOL
 ENV GIT_LFS_VERSION="3.2.0"
+
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH
 
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8

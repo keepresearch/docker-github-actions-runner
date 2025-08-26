@@ -22,14 +22,7 @@
         "libcurl4-openssl-dev",
         "libpq-dev",
         "pkg-config",
-        "software-properties-common"
-      ]
-    },
-    {
-      "category": "container-tools",
-      "source": "script",
-      "packages": [
-        "container-tools"
+        "git"
       ]
     },
     {
@@ -40,13 +33,6 @@
       ]
     },
     {
-      "category": "docker-cli",
-      "source": "script",
-      "packages": [
-        "docker-cli"
-      ]
-    },
-    {
       "category": "docker",
       "source": "script",
       "packages": [
@@ -54,10 +40,9 @@
       ]
     },
     {
-      "category": "git",
+      "category": "git-lfs",
       "source": "script",
       "packages": [
-        "git",
         "git-lfs"
       ]
     },
@@ -107,6 +92,13 @@
       "source": "script",
       "packages": [
         "yq"
+      ]
+    },
+    {
+      "category": "rust",
+      "source": "script",
+      "packages": [
+        "rust"
       ]
     }
   ]
