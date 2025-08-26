@@ -100,6 +100,15 @@ function install_rust() {
   rustup component add clippy rustfmt
 }
 
+function install_protoc() {
+  curl -Lo /tmp/protoc.zip $( \
+    curl 'https://api.github.com/repos/protocolbuffers/protobuf/releases/latest' | \
+    sed -rn 's/^.*browser_download_url.*(https:.*protoc.*linux-x86_64.zip).*$/\1/p' \
+    ) && \
+  unzip /tmp/protoc.zip -d /usr/local && \
+  rm /tmp/protoc.zip
+}
+
 function install_tools() {
   local function_name
   # shellcheck source=/dev/null
