@@ -13,6 +13,11 @@ ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH=/usr/local/cargo/bin:$PATH
 
+ENV FNM_COREPACK_ENABLED="true"
+ENV FNM_VERSION_FILE_STRATEGY="recursive"
+ENV FNM_DIR=/usr/local/share/fnm
+ENV PATH=/usr/local/share/fnm/aliases/default/bin:$PATH
+
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8

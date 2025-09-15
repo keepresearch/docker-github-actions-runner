@@ -109,6 +109,18 @@ function install_protoc() {
   rm /tmp/protoc.zip
 }
 
+function install_nodejs() {
+  curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "/usr/local/share/fnm" --skip-shell
+  ln -s /usr/local/share/fnm/fnm /usr/local/bin/fnm
+  fnm install 22
+  fnm install 24
+  fnm alias 24 default
+  echo "installed node version: $(node -v)"
+  echo "installed npm version: $(npm -v)"
+  corepack install -g pnpm
+  echo "installed pnpm version: $(pnpm -v)"
+}
+
 function install_tools() {
   local function_name
   # shellcheck source=/dev/null

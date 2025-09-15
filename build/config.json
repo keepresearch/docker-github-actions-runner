@@ -65,6 +65,13 @@
     },
     {
       "category": "node",
+      "source": "script",
+      "packages": [
+        "nodejs"
+      ]
+    },
+    {
+      "category": "node",
       "source": "apt",
       "packages": [
         "nodejs"
