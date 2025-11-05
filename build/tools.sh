@@ -98,6 +98,7 @@ function install_powershell() {
 function install_rust() {
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --no-modify-path --default-toolchain stable
   rustup component add clippy rustfmt
+  cargo install cargo-edit
 }
 
 function install_protoc() {
