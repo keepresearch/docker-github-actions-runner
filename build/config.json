@@ -22,7 +22,8 @@
         "libcurl4-openssl-dev",
         "libpq-dev",
         "pkg-config",
-        "git"
+        "git",
+        "cmake"
       ]
     },
     {
@@ -113,6 +114,13 @@
       "source": "script",
       "packages": [
         "protoc"
+      ]
+    },
+    {
+      "category": "llvm",
+      "source": "script",
+      "packages": [
+        "llvm_21"
       ]
     }
   ]

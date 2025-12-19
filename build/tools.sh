@@ -122,6 +122,41 @@ function install_nodejs() {
   echo "installed pnpm version: $(pnpm -v)"
 }
 
+function install_llvm_21() {
+  # LLVM
+  apt-get install -y libllvm-21-ocaml-dev libllvm21 llvm-21 llvm-21-dev llvm-21-doc llvm-21-examples llvm-21-runtime
+  # Clang and co
+  apt-get install -y clang-21 clang-tools-21 clang-21-doc libclang-common-21-dev libclang-21-dev libclang1-21 clang-format-21 python3-clang-21 clangd-21 clang-tidy-21
+  # compiler-rt
+  apt-get install -y libclang-rt-21-dev
+  # polly
+  apt-get install -y libpolly-21-dev
+  # libfuzzer
+  apt-get install -y libfuzzer-21-dev
+  # lldb
+  apt-get install -y lldb-21
+  # lld (linker)
+  apt-get install -y lld-21
+  # libc++
+  apt-get install -y libc++-21-dev libc++abi-21-dev
+  # OpenMP
+  apt-get install -y libomp-21-dev
+  # libclc
+  apt-get install -y libclc-21-dev
+  # libunwind
+  apt-get install -y libunwind-21-dev
+  # mlir
+  apt-get install -y libmlir-21-dev mlir-21-tools
+  # bolt
+  apt-get install -y libbolt-21-dev bolt-21
+  # flang
+  apt-get install -y flang-21
+  # wasm support
+  apt-get install -y libclang-rt-21-dev-wasm32 libclang-rt-21-dev-wasm64 libc++-21-dev-wasm32 libc++abi-21-dev-wasm32 libclang-rt-21-dev-wasm32 libclang-rt-21-dev-wasm64
+  # LLVM libc
+  apt-get install -y libllvmlibc-21-dev
+}
+
 function install_tools() {
   local function_name
   # shellcheck source=/dev/null
