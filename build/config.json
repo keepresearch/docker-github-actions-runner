@@ -122,6 +122,13 @@
       "packages": [
         "llvm_21"
       ]
+    },
+    {
+      "category": "golang",
+      "source": "script",
+      "packages": [
+        "golang"
+      ]
     }
   ]
 }

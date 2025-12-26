@@ -157,6 +157,31 @@ function install_llvm_21() {
   apt-get install -y libllvmlibc-21-dev
 }
 
+function install_golang() {
+  local GO_DOWNLOAD_URL
+
+  GO_DOWNLOAD_URL=$(curl -s https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json \
+    | jq -r 'first(.[] | select(.stable == true)) | .files[] | select(.platform == "linux" and .arch == "x64") | .download_url')
+
+  if [[ -z "$GO_DOWNLOAD_URL" || "$GO_DOWNLOAD_URL" == "null" ]]; then
+    echo "Failed to find Go download URL"
+    exit 1
+  fi
+
+  echo "Downloading Go from $GO_DOWNLOAD_URL"
+  curl -L -o /tmp/go.tar.gz "$GO_DOWNLOAD_URL"
+
+  mkdir -p /usr/local/go
+  tar -xzf /tmp/go.tar.gz -C /usr/local/go
+
+  ln -sf /usr/local/go/bin/go /usr/local/bin/go
+  ln -sf /usr/local/go/bin/gofmt /usr/local/bin/gofmt
+
+  rm /tmp/go.tar.gz
+
+  echo "installed go version: $(go version)"
+}
+
 function install_tools() {
   local function_name
   # shellcheck source=/dev/null
