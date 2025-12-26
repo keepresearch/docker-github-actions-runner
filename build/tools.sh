@@ -182,6 +182,10 @@ function install_golang() {
   echo "installed go version: $(go version)"
 }
 
+function install_helm() {
+  curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash -x
+}
+
 function install_tools() {
   local function_name
   # shellcheck source=/dev/null
