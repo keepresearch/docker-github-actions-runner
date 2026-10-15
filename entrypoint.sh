@@ -140,6 +140,7 @@ configure_runner() {
   fi
 
   echo "Configuring"
+  local config_status=0
   ./config.sh \
       --url "${_SHORT_URL}" \
       --token "${RUNNER_TOKEN}" \
@@ -149,9 +150,19 @@ configure_runner() {
       --runnergroup "${_RUNNER_GROUP}" \
       --unattended \
       --replace \
-      "${ARGS[@]}"
+      "${ARGS[@]}" || config_status=$?
 
-  [[ ! -d "${_RUNNER_WORKDIR}" ]] && mkdir -p "${_RUNNER_WORKDIR}"
+  if [[ ${config_status} -ne 0 ]]; then
+    echo "ERROR: Runner configuration failed (exit ${config_status}); refusing to persist configuration or start the runner." >&2
+    exit "${config_status}"
+  fi
+
+  if [[ ! -f /actions-runner/.runner ]]; then
+    echo "ERROR: Runner configuration did not create .runner; refusing to persist configuration or start the runner." >&2
+    exit 1
+  fi
+
+  mkdir -p "${_RUNNER_WORKDIR}" || exit 1
 
 }
 
@@ -190,7 +201,7 @@ if [[ -n "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}" ]]; then
   # directory exists, copy the data
   if [[ -d "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}" ]]; then
     echo "Copying previous data"
-    cp -p -r "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}/." "/actions-runner"
+    cp -p -r "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}/." "/actions-runner" || exit 1
   fi
 
   if [ -f "/actions-runner/.runner" ]; then
@@ -215,8 +226,14 @@ if [[ -n "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}" ]]; then
     echo "DISABLE_AUTOMATIC_DEREGISTRATION should be set to true to avoid issues with re-using a deregistered runner."
     exit 1
   fi
-  # Quoting (even with double-quotes) the regexp brokes the copying
-  cp -p -r "/actions-runner/_diag" "/actions-runner/svc.sh" /actions-runner/.[^.]* "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}"
+  if [[ ${_DEBUG_ONLY} == "false" ]]; then
+    mkdir -p "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}" || exit 1
+    # svc.sh and diagnostics may be absent; persist only files that exist.
+    for runner_file in /actions-runner/_diag /actions-runner/svc.sh /actions-runner/.[^.]*; do
+      [[ -e "${runner_file}" ]] || continue
+      cp -p -r "${runner_file}" "${_CONFIGURED_ACTIONS_RUNNER_FILES_DIR}" || exit 1
+    done
+  fi
 fi
 
 

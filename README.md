@@ -84,10 +84,32 @@ These containers are built via Github actions that [copy the dockerfile](https:/
 | `DEBUG_OUTPUT` | Optional boolean to print additional debug output. Default: false |
 | `UNSET_CONFIG_VARS` | Optional flag to unset all configuration environment variables after runner setup but before starting the runner. This prevents these variables from leaking into the workflow environment. Set to 'true' to enable. Defaults to 'false' for backward compatibility. |
 
+## Runner upgrades ##
+
+The image pins the runner version in `Dockerfile` (`GH_RUNNER_VERSION`), which can
+also be overridden with `--build-arg GH_RUNNER_VERSION=<version>`. GitHub.com
+[requires version 2.329.0 or later when registering a runner](https://github.blog/changelog/2026-02-05-github-actions-self-hosted-runner-minimum-version-enforcement-extended/).
+Rebuild and publish the image, then update the Kubernetes workload to the new image
+tag or digest and roll out all runner Pods. Restarting Pods with the old image
+does not upgrade its bundled runner, and automatic updates cannot repair a runner
+that is rejected during registration.
+
+Existing registrations in `CONFIGURED_ACTIONS_RUNNER_FILES_DIR` can be reused with
+the new image; there is no need to delete the persistent volume for this upgrade.
+Registration failures stop startup before saving configuration or running the
+listener. Keep rebuilding the image as new runner releases become available,
+especially when `DISABLE_AUTO_UPDATE` is set.
+
 ## Tests ##
 
 Tests are written in [goss](https://github.com/goss-org/goss/) for general assertions.
 It's expected that all pull-requests have relevant assertions in order to be merged.
+
+Run the startup regression tests without Docker or GitHub credentials:
+
+```sh
+python3 -B -m unittest discover -s tests -v
+```
 
 Prereqs: Ensure that docker, goss and dgoss are set up
 Note: while testing locally works, github actions will test all variations of operating systems and supported architectures.
