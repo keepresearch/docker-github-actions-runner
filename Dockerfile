@@ -4,7 +4,7 @@ FROM github-runner-base:latest
 ENV AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
 RUN mkdir -p /opt/hostedtoolcache
 
-ARG GH_RUNNER_VERSION="2.328.0"
+ARG GH_RUNNER_VERSION="2.338.0"
 
 ARG TARGETPLATFORM
 
